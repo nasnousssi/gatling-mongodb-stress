@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.jecklgamis</groupId>
+    <artifactId>gatling-test-example</artifactId>
+    <name>gatling-test-example</name>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.gatling.highcharts</groupId>
+            <artifactId>gatling-charts-highcharts</artifactId>
+            <version>3.9.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json4s</groupId>
+            <artifactId>json4s-native_2.13</artifactId>
+            <version>4.1.0-M2</version>
+        </dependency>
+
+
+
+
+
+
+
+        <dependency>
+            <groupId>io.gatling</groupId>
+            <artifactId>gatling-test-framework</artifactId>
+            <version>2.2.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.typesafe.play/play-json -->
+        <dependency>
+            <groupId>com.typesafe.play</groupId>
+            <artifactId>play-json_2.11</artifactId>
+            <version>2.5.10</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.reactivemongo/reactivemongo -->
+        <dependency>
+            <groupId>org.reactivemongo</groupId>
+            <artifactId>reactivemongo_2.12</artifactId>
+            <version>0.12.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.reactivemongo/reactivemongo-play-json -->
+        <dependency>
+            <groupId>org.reactivemongo</groupId>
+            <artifactId>reactivemongo-play-json_2.12</artifactId>
+            <version>0.12.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.reactivemongo/reactivemongo-iteratees -->
+        <dependency>
+            <groupId>org.reactivemongo</groupId>
+            <artifactId>reactivemongo-iteratees_2.12</artifactId>
+            <version>0.12.1</version>
+        </dependency>
+
+
+
+    </dependencies>
+
+    <build>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.conf</include>
+                </includes>
+            </testResource>
+        </testResources>
+        <plugins>
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+                <version>4.8.0</version>
+                <executions>
+                    <execution>
+                        <id>scala-compile-first</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>scala-test-compile</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <jvmArgs>
+                        <jvmArg>-Xms512m</jvmArg>
+                        <jvmArg>-Xmx1024m</jvmArg>
+                    </jvmArgs>
+                    <recompileMode>incremental</recompileMode>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.4.1</version>
+                <configuration>
+                    <finalName>${project.name}</finalName>
+                    <createDependencyReducedPom>true</createDependencyReducedPom>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>lean-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>${project.name}-lean</finalName>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>gatling</exclude>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                            <artifactSet>
+                                <includes>
+                                    <include>org.json4s:*</include>
+                                </includes>
+                            </artifactSet>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.gatling</groupId>
+                <artifactId>gatling-maven-plugin</artifactId>
+                <version>4.2.9</version>
+                <configuration>
+                    <simulationsFolder>src/main/scala</simulationsFolder>
+                    <runMultipleSimulations>false</runMultipleSimulations>
+                    <simulationClass>gatling.test.example.simulation.ExampleSimulation</simulationClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
