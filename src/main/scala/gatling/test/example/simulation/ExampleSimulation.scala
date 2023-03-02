@@ -19,7 +19,12 @@ class ExampleSimulation extends Simulation {
       .check(status.is(200))
     )
   setUp(rootEndPointUsers.inject(
-    constantUsersPerSec(PerfTestConfig.requestPerSecond) during (durationMin minutes))
+
+
+    constantUsersPerSec(PerfTestConfig.requestPerSecond) during (durationMin minutes)
+
+
+  )
     .protocols(httpConf))
     .assertions(
       global.responseTime.max.lt(maxResponseTimeMs),

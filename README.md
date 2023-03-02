@@ -2,6 +2,8 @@
 
 https://github.com/RC-Platform-Disco-Team/gatling-mongodb-protocol/blob/master/build.sbt
 
+java -cp target/gatling-test-example.jar io.gatling.app.Gatling -s gatling.test.example.simulation.RampupSimulation
+
 # gatling-test-example
 
 [![Build](https://github.com/jecklgamis/gatling-test-example/actions/workflows/build.yml/badge.svg)](https://github.com/jecklgamis/gatling-test-example/actions/workflows/build.yml)

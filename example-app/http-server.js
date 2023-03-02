@@ -5,15 +5,15 @@ const {MongoClient} = require('mongodb');
 const uri = "mongodb://localhost:27017";
 const client = new MongoClient(uri);
 
-async function main() {
-	await client.connect();
-    databasesList = await client.db().admin().listDatabases();
-
-    console.log("Databases:");
-    databasesList.databases.forEach(db => console.log(` - ${db.name}`));
-}
-
-main()
+//async function main() {
+//	await client.connect();
+//    databasesList = await client.db().admin().listDatabases();
+//
+//    console.log("Databases:");
+//    databasesList.databases.forEach(db => console.log(` - ${db.name}`));
+//}
+//
+//main()
 if (process.argv.length <= 2) {
     console.log("Requires port number");
     process.exit();
