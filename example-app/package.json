@@ -1,0 +1,11 @@
+{
+  "name": "mongo-backend",
+  "description": "a simple monggodb server",
+  "version": "1",
+  "dependencies": {
+    "mongodb": "^5.1.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^7.6.0"
+  }
+}
