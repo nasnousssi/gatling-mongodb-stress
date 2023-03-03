@@ -16,11 +16,11 @@ let conn;
 let db;
 
 
- app.get('/', async (req, res) => {
-   res.send('Hello World!')
-     databasesList = await client.db().admin().listDatabases();
-     console.log(databasesList)
- })
+ //app.get('/', async (req, res) => {
+ //  res.send('Hello World!')
+ //    databasesList = await client.db().admin().listDatabases();
+ //    console.log(databasesList)
+ //})
 
 
 // Add a new document to the collection
@@ -31,15 +31,12 @@ app.post("/", async (req, res) => {
     // Query for a movie that has the title 'Back to the Future'
     const query = { title: 'Back to the Future' };
 
-
        var randomName = faker.name.fullName(); // Generates a random name
        var randomEmail = faker.internet.email();
        const doc = {
           title: randomName,
-          content: randomEmail,
+          email: randomEmail,
         }
-
-
 
     const movie = await movies.insertOne(doc);
     //console.log(movie);
@@ -50,14 +47,30 @@ app.post("/", async (req, res) => {
 console.log(e)
           res.status(404).json({})
   }
-//       finally {
-//       console.log("finally")
-//    // Ensures that the client will close when you finish/error
-//
-//    //await client.close();
-//  }
-
 });
+
+
+app.get("/", async (req, res) => {
+  try {
+    const database = client.db('sample_mflix');
+    const movies = database.collection('movies');
+       var randomEmail = faker.internet.email();
+       const doc = {
+          email: randomEmail,
+        }
+
+    const movie = await movies.findOne(doc);
+    //console.log(movie);
+    res.send(movie).status(204);
+  } catch(e) {
+  //console.log(e)
+
+console.log(e)
+          res.status(404).json({})
+  }
+});
+
+
  app.listen(port, async () => {
 
    try {
